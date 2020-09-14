@@ -19,12 +19,12 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     List<Auction> findTop4ByOrderByPriceDesc();
 
-    @Query("SELECT a FROM Auction a WHERE a.title = CASE WHEN :title IS NULL THEN '%' ELSE :title END AND" +
-            " a.carMake = CASE WHEN :carMaker IS NULL THEN '%' ELSE :carMaker END AND" +
-            " a.carModel = CASE WHEN :carModel IS NULL THEN '%' ELSE :carModel END AND" +
-            " a.color = CASE WHEN :color IS NULL THEN '%' ELSE :color END")
-    List<Auction> findAllByCarMakeAndCarModelAndColor(@Param("title") String title,
-                                                              @Param("carMaker") String carMaker,
-                                                              @Param("carModel") String carModel,
-                                                              @Param("color") String color);
+    @Query("SELECT a FROM Auction a WHERE (:title IS NULL OR a.title = :title) AND" +
+            " :carMaker IS NULL OR a.carMake = :carMaker AND" +
+            " :carModel IS NULL OR a.carModel = :carModel AND" +
+            " :color IS NULL OR a.color = :color")
+    List<Auction> findByFilters(@Param("title") String title,
+                                @Param("carMaker") String carMaker,
+                                @Param("carModel") String carModel,
+                                @Param("color") String color);
 }

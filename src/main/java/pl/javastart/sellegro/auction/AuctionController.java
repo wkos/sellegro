@@ -23,7 +23,10 @@ public class AuctionController {
                            @RequestParam(required = false) String sort,
                            AuctionFilters auctionFilters) {
         List<Auction> auctions;
-//        auctions = auctionService.auctionRepository.findAll();
+        auctions = auctionService.auctionRepository.findAll();
+        for (Auction s : auctions) {
+            System.out.println(s);
+        }
         String carMaker = "";
         String carModel = "";
         String color = "%";
@@ -48,8 +51,10 @@ public class AuctionController {
             }
 
         } else {
-            auctions = auctionService.auctionRepository.findAllByCarMakeAndCarModelAndColor(auctionFilters.getTitle(),
-                    auctionFilters.getCarMaker(), auctionFilters.getCarModel(), auctionFilters.getColor());
+            auctions = auctionService.auctionRepository.findByFilters(auctionFilters.getTitle(),
+                    auctionFilters.getCarMaker(),
+                    auctionFilters.getCarModel(),
+                    auctionFilters.getColor());
 //            if (auctionFilters.getTitle() != null) {
 ////                auctions = auctionRepository.findAllByTitle(auctionFilters.getTitle());
 //            }
