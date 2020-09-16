@@ -23,60 +23,7 @@ public class AuctionController {
                            @RequestParam(required = false) String sort,
                            AuctionFilters auctionFilters) {
         List<Auction> auctions;
-        auctions = auctionService.auctionRepository.findAll();
-        for (Auction s : auctions) {
-            System.out.println(s);
-        }
-        String carMaker = "";
-        String carModel = "";
-        String color = "%";
-        System.out.println(auctionFilters);
-        System.out.println(sort);
-        if (sort != null) {
-            switch (sort) {
-                case "title":
-                    auctions = auctionService.auctionRepository.findAllByOrderByTitle();
-                    break;
-                case "price":
-                    auctions = auctionService.auctionRepository.findAllByOrderByPrice();
-                    break;
-                case "color":
-                    auctions = auctionService.auctionRepository.findAllByOrderByColor();
-                    break;
-                case "endDate":
-                    auctions = auctionService.auctionRepository.findAllByOrderByEndDate();
-                    break;
-                default:
-                    auctions = auctionService.auctionRepository.findAllByOrderByTitle();
-            }
-
-        } else {
-            auctions = auctionService.auctionRepository.findByFilters(auctionFilters.getTitle(),
-                    auctionFilters.getCarMaker(),
-                    auctionFilters.getCarModel(),
-                    auctionFilters.getColor());
-//            if (auctionFilters.getTitle() != null) {
-////                auctions = auctionRepository.findAllByTitle(auctionFilters.getTitle());
-//            }
-//            if (auctionFilters.getCarMaker() == null) {
-//                carMaker = "*";
-////                auctions = auctionRepository.findAllByCarMake(auctionFilters.getCarMaker());
-//            }
-//            if (auctionFilters.getCarModel() == null) {
-//                carModel = "*";
-////                auctions = auctionRepository.findAllByCarModel(auctionFilters.getCarModel());
-//            }
-//            if (auctionFilters.getColor() == null) {
-//                color = "*";
-////                System.out.println("jestem w kolorze");
-////                System.out.println(auctionFilters.getColor());
-////                auctions = auctionRepository.findAllByColor(auctionFilters.getColor());
-//            }
-        }
-
-//        for (Auction auction : auctions) {
-//            System.out.println(auction);
-//        }
+        auctions = auctionService.getAuctionsByFilters(sort, auctionFilters);
         model.addAttribute("cars", auctions);
         model.addAttribute("filters", auctionFilters);
         return "auctions";

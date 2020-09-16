@@ -10,8 +10,6 @@ public class AuctionService {
 
     AuctionRepository auctionRepository;
 
-//    private List<Auction> auctions;
-
     private static final String[] ADJECTIVES = {"Niesamowity", "Jedyny taki", "IGŁA", "HIT", "Jak nowy",
             "Perełka", "OKAZJA", "Wyjątkowy"};
 
@@ -29,16 +27,36 @@ public class AuctionService {
         }
     }
 
-//    public List<Auction> find4MostExpensive() {
-//        return auctions.stream()
-//                .sorted(Comparator.comparing(Auction::getPrice).reversed())
-//                .limit(4)
-//                .collect(Collectors.toList());
-//    }
-
-//    public List<Auction> findAllForFilters(AuctionFilters auctionFilters) {
-//        return auctions.stream()
-//                .filter(auction -> auctionFilters.getTitle() == null || auction.getTitle().toUpperCase().contains(auctionFilters.getTitle().toUpperCase()))
-//                .collect(Collectors.toList());
-//    }
+    public List<Auction> getAuctionsByFilters(String sort, AuctionFilters auctionFilters) {
+        List<Auction> auctions;
+        if (sort != null) {
+            switch (sort) {
+                case "title":
+                    auctions = auctionRepository.findAllByOrderByTitle();
+                    break;
+                case "price":
+                    auctions = auctionRepository.findAllByOrderByPrice();
+                    break;
+                case "color":
+                    auctions = auctionRepository.findAllByOrderByColor();
+                    break;
+                case "endDate":
+                    auctions = auctionRepository.findAllByOrderByEndDate();
+                    break;
+                default:
+                    auctions = auctionRepository.findAllByOrderByTitle();
+            }
+        } else {
+            String getTitle = auctionFilters.getTitle() == null ? "" : auctionFilters.getTitle().toLowerCase();
+            String getCarMaker = auctionFilters.getCarMaker() == null ? "" : auctionFilters.getCarMaker().toLowerCase();
+            String getCarModel = auctionFilters.getCarModel() == null ? "" : auctionFilters.getCarModel().toLowerCase();
+            String getColor = auctionFilters.getColor() == null ? "" : auctionFilters.getColor().toLowerCase();
+            auctions = auctionRepository.findByFilters(
+                    getTitle,
+                    getCarMaker,
+                    getCarModel,
+                    getColor);
+        }
+        return auctions;
+    }
 }

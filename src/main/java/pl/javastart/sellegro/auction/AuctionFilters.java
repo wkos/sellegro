@@ -1,5 +1,7 @@
 package pl.javastart.sellegro.auction;
 
+import java.util.Objects;
+
 public class AuctionFilters {
 
     private String title;
