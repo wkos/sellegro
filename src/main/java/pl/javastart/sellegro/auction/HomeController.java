@@ -19,7 +19,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         auctionService.saveTitles();
-        model.addAttribute("cars", auctionService.auctionRepository.findTop4ByOrderByPriceDesc());
+        model.addAttribute("cars", auctionService.findTop4ByOrderByPriceDesc());
         return "home";
     }
 }

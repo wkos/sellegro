@@ -8,7 +8,7 @@ import java.util.*;
 @Service
 public class AuctionService {
 
-    AuctionRepository auctionRepository;
+    private AuctionRepository auctionRepository;
 
     private static final String[] ADJECTIVES = {"Niesamowity", "Jedyny taki", "IGŁA", "HIT", "Jak nowy",
             "Perełka", "OKAZJA", "Wyjątkowy"};
@@ -27,36 +27,40 @@ public class AuctionService {
         }
     }
 
-    public List<Auction> getAuctionsByFilters(String sort, AuctionFilters auctionFilters) {
+    public List<Auction> findTop4ByOrderByPriceDesc() {
+        List<Auction> auctions, first4Auctions;
+        auctions = auctionRepository.findTop4ByOrderByPriceDesc();
+        return auctions;
+    }
+
+    public List<Auction> getAuctionsSortBy(String sort) {
         List<Auction> auctions;
-        if (sort != null) {
-            switch (sort) {
-                case "title":
-                    auctions = auctionRepository.findAllByOrderByTitle();
-                    break;
-                case "price":
-                    auctions = auctionRepository.findAllByOrderByPrice();
-                    break;
-                case "color":
-                    auctions = auctionRepository.findAllByOrderByColor();
-                    break;
-                case "endDate":
-                    auctions = auctionRepository.findAllByOrderByEndDate();
-                    break;
-                default:
-                    auctions = auctionRepository.findAllByOrderByTitle();
-            }
-        } else {
-            String getTitle = auctionFilters.getTitle() == null ? "" : auctionFilters.getTitle().toLowerCase();
-            String getCarMaker = auctionFilters.getCarMaker() == null ? "" : auctionFilters.getCarMaker().toLowerCase();
-            String getCarModel = auctionFilters.getCarModel() == null ? "" : auctionFilters.getCarModel().toLowerCase();
-            String getColor = auctionFilters.getColor() == null ? "" : auctionFilters.getColor().toLowerCase();
-            auctions = auctionRepository.findByFilters(
-                    getTitle,
-                    getCarMaker,
-                    getCarModel,
-                    getColor);
+        switch (sort) {
+            case "title":
+                auctions = auctionRepository.findAllByOrderByTitle();
+                break;
+            case "price":
+                auctions = auctionRepository.findAllByOrderByPrice();
+                break;
+            case "color":
+                auctions = auctionRepository.findAllByOrderByColor();
+                break;
+            case "endDate":
+                auctions = auctionRepository.findAllByOrderByEndDate();
+                break;
+            default:
+                auctions = auctionRepository.findAllByOrderByTitle();
         }
+        return auctions;
+    }
+
+    public List<Auction> getAuctionsByFilters(AuctionFilters auctionFilters) {
+        List<Auction> auctions;
+        auctions = auctionRepository.findByFilters(
+                auctionFilters.getTitleLowerCase(),
+                auctionFilters.getCarMakerLowerCase(),
+                auctionFilters.getCarModelLowerCase(),
+                auctionFilters.getColorLowerCase());
         return auctions;
     }
 }

@@ -1,13 +1,23 @@
 package pl.javastart.sellegro.auction;
 
-import java.util.Objects;
+import org.springframework.beans.factory.annotation.Value;
 
 public class AuctionFilters {
-
+    @Value("")
     private String title;
+    @Value("")
     private String carMaker;
+    @Value("")
     private String carModel;
+    @Value("")
     private String color;
+
+    public AuctionFilters(String title, String carMaker, String carModel, String color) {
+        this.title = title;
+        this.carMaker = carMaker;
+        this.carModel = carModel;
+        this.color = color;
+    }
 
     public String getTitle() {
         return title;
@@ -39,6 +49,22 @@ public class AuctionFilters {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getTitleLowerCase() {
+        return title != null ? title.toLowerCase() : "";
+    }
+
+    public String getCarMakerLowerCase() {
+        return carMaker != null ? carMaker.toLowerCase() : "";
+    }
+
+    public String getCarModelLowerCase() {
+        return carMaker != null ? carModel.toLowerCase() : "";
+    }
+
+    public String getColorLowerCase() {
+        return color != null ? color.toLowerCase() : "";
     }
 
     @Override

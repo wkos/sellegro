@@ -1,6 +1,7 @@
 package pl.javastart.sellegro.auction;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,11 @@ public class AuctionController {
                            @RequestParam(required = false) String sort,
                            AuctionFilters auctionFilters) {
         List<Auction> auctions;
-        auctions = auctionService.getAuctionsByFilters(sort, auctionFilters);
+        if(sort!=null){
+            auctions = auctionService.getAuctionsSortBy(sort);
+        } else {
+            auctions = auctionService.getAuctionsByFilters(auctionFilters);
+        }
         model.addAttribute("cars", auctions);
         model.addAttribute("filters", auctionFilters);
         return "auctions";
