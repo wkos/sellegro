@@ -27,14 +27,21 @@ public class AuctionService {
         }
     }
 
-    public List<Auction> findTop4ByOrderByPriceDesc() {
-        List<Auction> auctions, first4Auctions;
-        auctions = auctionRepository.findTop4ByOrderByPriceDesc();
-        return auctions;
+    public List<Auction> findAuctionsBySortOrByFilter(String sort, AuctionFilters auctionFilters) {
+        if (sort != null) {
+            return findAuctionsSortBy(sort);
+        } else {
+            return findAuctionsByFilters(auctionFilters);
+        }
     }
 
-    public List<Auction> getAuctionsSortBy(String sort) {
+    public List<Auction> findTop4ByOrderByPriceDesc() {
+        return auctionRepository.findTop4ByOrderByPriceDesc();
+    }
+
+    public List<Auction> findAuctionsSortBy(String sort) {
         List<Auction> auctions;
+        auctions = auctionRepository.findAll();
         switch (sort) {
             case "title":
                 auctions = auctionRepository.findAllByOrderByTitle();
@@ -54,7 +61,7 @@ public class AuctionService {
         return auctions;
     }
 
-    public List<Auction> getAuctionsByFilters(AuctionFilters auctionFilters) {
+    public List<Auction> findAuctionsByFilters(AuctionFilters auctionFilters) {
         List<Auction> auctions;
         auctions = auctionRepository.findByFilters(
                 auctionFilters.getTitleLowerCase(),

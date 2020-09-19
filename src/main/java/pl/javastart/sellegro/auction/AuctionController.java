@@ -24,11 +24,7 @@ public class AuctionController {
                            @RequestParam(required = false) String sort,
                            AuctionFilters auctionFilters) {
         List<Auction> auctions;
-        if(sort!=null){
-            auctions = auctionService.getAuctionsSortBy(sort);
-        } else {
-            auctions = auctionService.getAuctionsByFilters(auctionFilters);
-        }
+        auctions = auctionService.findAuctionsBySortOrByFilter(sort, auctionFilters);
         model.addAttribute("cars", auctions);
         model.addAttribute("filters", auctionFilters);
         return "auctions";

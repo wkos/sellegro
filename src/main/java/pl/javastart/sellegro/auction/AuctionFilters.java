@@ -1,16 +1,13 @@
 package pl.javastart.sellegro.auction;
 
-import org.springframework.beans.factory.annotation.Value;
-
 public class AuctionFilters {
-    @Value("")
-    private String title;
-    @Value("")
-    private String carMaker;
-    @Value("")
-    private String carModel;
-    @Value("")
-    private String color;
+    private String title="";
+    private String carMaker="";
+    private String carModel="";
+    private String color="";
+
+    public AuctionFilters() {
+    }
 
     public AuctionFilters(String title, String carMaker, String carModel, String color) {
         this.title = title;
