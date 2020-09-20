@@ -8,9 +8,7 @@ import java.util.*;
 @Service
 public class AuctionService {
 
-    AuctionRepository auctionRepository;
-
-//    private List<Auction> auctions;
+    private AuctionRepository auctionRepository;
 
     private static final String[] ADJECTIVES = {"Niesamowity", "Jedyny taki", "IGŁA", "HIT", "Jak nowy",
             "Perełka", "OKAZJA", "Wyjątkowy"};
@@ -29,16 +27,47 @@ public class AuctionService {
         }
     }
 
-//    public List<Auction> find4MostExpensive() {
-//        return auctions.stream()
-//                .sorted(Comparator.comparing(Auction::getPrice).reversed())
-//                .limit(4)
-//                .collect(Collectors.toList());
-//    }
+    public List<Auction> findAuctionsBySortOrByFilter(String sort, AuctionFilters auctionFilters) {
+        if (sort != null) {
+            return findAuctionsSortBy(sort);
+        } else {
+            return findAuctionsByFilters(auctionFilters);
+        }
+    }
 
-//    public List<Auction> findAllForFilters(AuctionFilters auctionFilters) {
-//        return auctions.stream()
-//                .filter(auction -> auctionFilters.getTitle() == null || auction.getTitle().toUpperCase().contains(auctionFilters.getTitle().toUpperCase()))
-//                .collect(Collectors.toList());
-//    }
+    public List<Auction> findTop4ByOrderByPriceDesc() {
+        return auctionRepository.findTop4ByOrderByPriceDesc();
+    }
+
+    public List<Auction> findAuctionsSortBy(String sort) {
+        List<Auction> auctions;
+        auctions = auctionRepository.findAll();
+        switch (sort) {
+            case "title":
+                auctions = auctionRepository.findAllByOrderByTitle();
+                break;
+            case "price":
+                auctions = auctionRepository.findAllByOrderByPrice();
+                break;
+            case "color":
+                auctions = auctionRepository.findAllByOrderByColor();
+                break;
+            case "endDate":
+                auctions = auctionRepository.findAllByOrderByEndDate();
+                break;
+            default:
+                auctions = auctionRepository.findAllByOrderByTitle();
+        }
+        return auctions;
+    }
+
+    public List<Auction> findAuctionsByFilters(AuctionFilters auctionFilters) {
+        List<Auction> auctions;
+        auctions = auctionRepository.findByFilters(
+                auctionFilters.getTitleLowerCase(),
+                auctionFilters.getCarMakerLowerCase(),
+                auctionFilters.getCarModelLowerCase(),
+                auctionFilters.getColorLowerCase());
+        return auctions;
+    }
 }

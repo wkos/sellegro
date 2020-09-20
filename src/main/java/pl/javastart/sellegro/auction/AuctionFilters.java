@@ -1,11 +1,20 @@
 package pl.javastart.sellegro.auction;
 
 public class AuctionFilters {
+    private String title="";
+    private String carMaker="";
+    private String carModel="";
+    private String color="";
 
-    private String title;
-    private String carMaker;
-    private String carModel;
-    private String color;
+    public AuctionFilters() {
+    }
+
+    public AuctionFilters(String title, String carMaker, String carModel, String color) {
+        this.title = title;
+        this.carMaker = carMaker;
+        this.carModel = carModel;
+        this.color = color;
+    }
 
     public String getTitle() {
         return title;
@@ -37,6 +46,22 @@ public class AuctionFilters {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getTitleLowerCase() {
+        return title != null ? title.toLowerCase() : "";
+    }
+
+    public String getCarMakerLowerCase() {
+        return carMaker != null ? carMaker.toLowerCase() : "";
+    }
+
+    public String getCarModelLowerCase() {
+        return carMaker != null ? carModel.toLowerCase() : "";
+    }
+
+    public String getColorLowerCase() {
+        return color != null ? color.toLowerCase() : "";
     }
 
     @Override
